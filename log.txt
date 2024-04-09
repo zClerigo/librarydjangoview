@@ -1,0 +1,3 @@
+4-9 - Jay: Installed dependencies for django. Began log.txt
+
+4-9 - Zidanni: Created database entity diagram. Created and shared repository
