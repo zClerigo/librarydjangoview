@@ -1,0 +1,2 @@
+# librarydjangoview
+Django View Projecy
