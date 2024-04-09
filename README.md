@@ -1,2 +1,5 @@
 # librarydjangoview
-Django View Projecy
+
+Zidanni Clerigo: zClerigo
+
+Jay Lin: jlin040
