@@ -1,3 +1,5 @@
 4-9 - Jay: Installed dependencies for django. Began log.txt
 
 4-9 - Zidanni: Created database entity diagram. Created and shared repository
+
+4-10 - Zidanni: Completed database entity diagram (subject to change). Created and started configuring django apps for home page and library
