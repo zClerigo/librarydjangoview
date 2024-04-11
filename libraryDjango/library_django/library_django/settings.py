@@ -21,7 +21,7 @@ from django.core.exceptions import ImproperlyConfigured
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 with open(os.path.join(
-        BASE_DIR, 'movie_theater', 'secrets.json')) as f:
+        BASE_DIR, 'library_django', 'secrets.json')) as f:
     secrets = json.loads(f.read())
 
 def get_secret(setting, secrets=secrets):
@@ -137,7 +137,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "movie_theater_static")
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "library_django_static")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -150,7 +150,7 @@ GRAPH_MODELS = {
 }
 
 
-LOGIN_REDIRECT_URL = "/movies/movies/"
+LOGIN_REDIRECT_URL = "/library"
 LOGOUT_REDIRECT_URL = "/"
 
 DJANGO_VITE_ASSETS_PATH = os.path.join(BASE_DIR, "core", "static", "vite")
