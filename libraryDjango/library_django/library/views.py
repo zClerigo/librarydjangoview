@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 
 
 class HomePageView(TemplateView):
-    template_name = "core/home.html"
+    template_name = "home.html"
 
 
 # @login_required
