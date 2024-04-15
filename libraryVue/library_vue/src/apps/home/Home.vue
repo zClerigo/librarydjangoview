@@ -1,6 +1,8 @@
 <template>
     <div>
-    Hello vue
+        <p>
+        Hello vue
+        </p>
     </div>
 </template>
 <script>
