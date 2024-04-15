@@ -1,11 +1,10 @@
-4-9 - Jay: Installed dependencies for django. Began log.txt
+4-10 - Jay: Installed dependencies for django. Began log.txt
+4-10 - Zidanni: Created database entity diagram. Created and shared repository
 
-4-9 - Zidanni: Created database entity diagram. Created and shared repository
+4-11 - Zidanni: Completed database entity diagram (subject to change). Created and started configuring django apps for home page and library
+4-11 - Jay: Finished django and Vue installation. Began connecting front and backend.
 
-4-10 - Zidanni: Completed database entity diagram (subject to change). Created and started configuring django apps for home page and library
+4-12 - Jay: Finished connecting front and backend (most likely). Need to resolve import error
+4-12 - Zidanni: Absent in class
 
-4-10 - Jay: Finished django and Vue installation. Began connecting front and backend.
-
-4-11 - Jay: Finished connecting front and backend (most likely). Need to resolve import error
-
-4-11 - Zidanni: Absent in class
+4-15 - Jay: Mount home and checkout vue apps to django
