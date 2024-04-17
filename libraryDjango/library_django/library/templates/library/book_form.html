@@ -3,12 +3,17 @@
 
 {% block content %}
 
+<form method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Save">
+</form>
+
 <br><br>
 
-<div id="app">
+{% comment %} <div id="app">
     <app>
     </app>
-</div>
+</div> {% endcomment %}
 
 <h4>Welcome! Please Login!</h4>
 
@@ -20,8 +25,9 @@
     <script>
         var ext_csrf_token = '{{ csrf_token }}'
         var ext_form = '{{ form.as_p | escapejs }}'
+        var ext_book_dict = {{ book_dict | safe }}
     </script>
 
     {% vite_hmr_client %}
-    {% vite_asset 'src/apps/home/home.js' %}
+    {% vite_asset 'src/apps/movie_edit/movie_edit.js' %}
 {% endblock js %}
