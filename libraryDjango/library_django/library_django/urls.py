@@ -20,5 +20,6 @@ from django.contrib.auth import urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('library/', include('library.urls', namespace='library'))
+    path('library/', include('library.urls', namespace='library')),
+    path("accounts/", include("django.contrib.auth.urls")),
 ]
