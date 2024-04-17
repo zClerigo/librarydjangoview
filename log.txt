@@ -8,3 +8,7 @@
 4-12 - Zidanni: Absent in class
 
 4-15 - Jay: Mount home and checkout vue apps to django
+4-12/15 - Zidanni: Started user auth and ran into POST request errors. Fixed by changing urls. Ran into another redirect error
+
+4-16 - Zidanni: Finished user auth
+
