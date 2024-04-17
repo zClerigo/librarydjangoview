@@ -3,6 +3,6 @@
 {% block content %}
 <a href="{% url 'library:addbook' %}">New book</a><br/><br/>
 {% for book in object_list %}
-  - {{ book.name }}<br/>
+<a href="{% url 'library:book_detail' book.id %}">{{ book.name }}</a><br/>
 {% endfor %}
 {% endblock content %}

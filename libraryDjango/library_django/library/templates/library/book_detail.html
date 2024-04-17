@@ -1,12 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-<a href="{% url 'library:home' %}"> list</a><br/>
-<a href="{% url 'movies:movie_update' object.id %}">Update Movie</a><br/>
-<a href="{% url 'movies:movie_delete' object.id %}">Delete Movie</a><br/>
+<a href="{% url 'library:booklist' %}"> list</a><br/>
+{% comment %} <a href="{% url 'movies:movie_update' object.id %}">Update Movie</a><br/>
+<a href="{% url 'movies:movie_delete' object.id %}">Delete Movie</a><br/> {% endcomment %}
 <h1>{{ object.name }}</h1>
 
-Running time: {{object.running_time|time:"H"}}<br/>
-Director: {{object.director}}<br/>
-Release date: {{object.release_date|date:"d M Y"}}<br/>
+Author: {{object.author}}<br/>
+Checked out: {{object.checked_out}}<br/>
+
+{% if object.checked_out%}
+Checkout date: {{object.checkout_date|date:"d M Y"}}<br/>
+{% endif %}
+
 {% endblock content %}

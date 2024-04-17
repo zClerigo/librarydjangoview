@@ -8,3 +8,5 @@
 4-12 - Zidanni: Absent in class
 
 4-15 - Jay: Mount home and checkout vue apps to django
+
+4-16 - Jay : Finish addbook functionality, began book checkout. Having trouble passing ext vars from django to vue

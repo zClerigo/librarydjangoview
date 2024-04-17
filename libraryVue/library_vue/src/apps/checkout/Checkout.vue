@@ -16,15 +16,20 @@
             VueDatePicker,
             Multiselect
         },
-        mounted() {
-            this.csrf_token = ext_csrf_token,
-            this.form = ext_form
-        },
         data: function() {
             return {
-                csrf_token: window.ext_csrf_token,
-                form: window.ext_form,
+                csrf_token: '',
+                form: '',
+                selectedBooks: [],
+                bookList: []
             }
+        },
+        mounted() {
+            this.bookList = ext_book_list,
+            this.csrf_token = ext_csrf_token,
+            this.form = ext_form,
+
+            console.log(this.bookList)
         },
         methods: {
         },
