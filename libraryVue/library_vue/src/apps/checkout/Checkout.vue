@@ -25,11 +25,10 @@
             }
         },
         mounted() {
-            this.bookList = ext_book_list,
             this.csrf_token = ext_csrf_token,
             this.form = ext_form,
 
-            console.log(this.bookList)
+            console.log(this.csrf_token)
         },
         methods: {
         },

@@ -15,7 +15,6 @@
     {{ block.super }}
 
     <script>
-        var ext_book_list = {{ book_list | safe }}
         var ext_csrf_token = '{{ csrf_token }}'
         var ext_form = '{{ form.as_p | escapejs }}'
     </script>

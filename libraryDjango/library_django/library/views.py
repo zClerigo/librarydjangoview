@@ -14,13 +14,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Book
 from .forms import BookForm
 
-class BookListView(ListView):
+class BookListView(LoginRequiredMixin, ListView):
     model = Book
     
-class BookDetailView(DetailView):
+class BookDetailView(LoginRequiredMixin, DetailView):
     model = Book
 
-class AddBookView(CreateView):
+class AddBookView(LoginRequiredMixin, CreateView):
     model = Book
     form_class = BookForm
 
@@ -35,7 +35,7 @@ class AddBookView(CreateView):
     def get_success_url(self):
         return reverse_lazy("library:book_detail", args=[self.object.id])
 
-class CheckoutView(View):
+class CheckoutView(LoginRequiredMixin, View):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         book_list = list(Book.objects.all().values())
