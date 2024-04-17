@@ -7,17 +7,20 @@ from django.contrib import messages
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.forms import model_to_dict
+from django.contrib.auth.views import LoginView
+from django.contrib.auth import login as auth_login
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Book
 from .forms import BookForm
 
-class BookListView(ListView):
+class BookListView(LoginRequiredMixin, ListView):
     model = Book
     
-class BookDetailView(DetailView):
+class BookDetailView(LoginRequiredMixin, DetailView):
     model = Book
 
-class AddBookView(CreateView):
+class AddBookView(LoginRequiredMixin, CreateView):
     model = Book
     form_class = BookForm
 
@@ -32,7 +35,7 @@ class AddBookView(CreateView):
     def get_success_url(self):
         return reverse_lazy("library:book_detail", args=[self.object.id])
 
-class CheckoutView(View):
+class CheckoutView(LoginRequiredMixin, View):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         book_list = list(Book.objects.all().values())
@@ -50,6 +53,16 @@ class CheckoutView(View):
     def get(self, request):
         return render(request, 'checkout.html')
 
+class CoreLoginView(LoginView):
+    template_name = "core/login.html"
+    def form_valid(self, form):
+        """Security check complete. Log the user in."""
+        user = form.get_user()
+        auth_login(self.request, user)
+        if user_need_to_go_to_otp:
+            return redirect('otp_url')
+        else:
+            return else_where
 # @login_required
 # def test_view(request):
 #     return render(request, "core/test.html")  

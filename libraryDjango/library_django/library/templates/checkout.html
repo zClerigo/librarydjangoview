@@ -9,7 +9,6 @@
     <app>
     </app>
 </div>
-
 {% endblock content %}
 
 {% block js %}
@@ -18,7 +17,6 @@
     <script>
         var ext_csrf_token = '{{ csrf_token }}'
         var ext_form = '{{ form.as_p | escapejs }}'
-        var ext_book_list = {{ book_list | safe }}
     </script>
 
     {% vite_hmr_client %}
