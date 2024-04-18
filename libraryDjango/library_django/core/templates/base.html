@@ -50,6 +50,9 @@
                 </div>
             </div>
         </div>
+        <nav>
+            <a href="{% url 'library:addbook' %}">New book</a> - <a href="{% url 'library:checkout' %}">checkout</a> - <a href="{% url 'library:booklist' %}"> list</a> - <a href="{% url 'library:home' %}">Home</a>
+        </nav>
         {% if messages %}
         <ul class="messages">
             {% for message in messages %}
