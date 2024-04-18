@@ -55,7 +55,9 @@
         },
         mounted() {
             this.csrf_token = ext_csrf_token,
-            this.bookList = ext_book_list,
+            this.bookList = ext_book_list.map(item => ({
+  name: item.fields.name,
+}));
             this.selectedBooks = this.bookList.filter((book) => book.checkedOut)
 
             console.log(this.csrf_token)
