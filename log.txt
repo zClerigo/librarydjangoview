@@ -14,3 +14,4 @@
 4-16 - Jay : Finish addbook functionality, began book checkout. Having trouble passing ext vars from django to vue. merge branches
 
 4-17 - Jay : Finish home page that displays checked out books. ran into data passing problem at checkout. added a navigation bar
+4-17 - Zidanni: Fixed data passing problem at checkout vue. Changed and added database entity diagram.
