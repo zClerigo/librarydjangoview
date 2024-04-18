@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views import View
 from django.views.generic import TemplateView, ListView
 from django.views.generic.detail import DetailView
@@ -10,6 +10,8 @@ from django.forms import model_to_dict
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.serializers import serialize
+import json
 
 from .models import Book
 from .forms import BookForm
@@ -34,24 +36,44 @@ class AddBookView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse_lazy("library:book_detail", args=[self.object.id])
-
-class CheckoutView(LoginRequiredMixin, View):
+    
+class HomeView(LoginRequiredMixin, ListView):
+    template_name = 'home.html'
+    model = Book
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        book_list = list(Book.objects.all().values())
-        context["book_list"] = book_list
+        book_data = Book.objects.filter(checked_out=True)
+        book_list = [{'name': book.name, 'author': book.author, 'checkout_date': book.checkout_date.strftime('%Y-%m-%d')} for book in book_data]
+        books_json = json.dumps(book_list)
+        context["book_list"] = books_json
         print("context", context)
         return context
+
+class CheckoutView(LoginRequiredMixin, UpdateView):
+    template_name = 'checkout.html'
+    model = Book
+    fields = ['checked_out'] 
+    success_url = reverse_lazy('home') 
     
-    def post(self, request):
-        selected_ids = request.POST.getlist('selectedIds[]') 
-        for book_id in selected_ids:
-            book = Book.objects.get(id=book_id)
-            book.checked_out = not book.checked_out
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        book_data = Book.objects.all()
+        books_json = serialize('json', book_data, fields=('name', 'author', 'checkout_date'))
+        context["book_list"] = books_json
+        return context
+
+
+    def get_object(self, queryset=None):
+        return None
+
+    def form_valid(self, form):
+        selected_books = form.cleaned_data.get('selectedBooks', [])
+        for book_id in selected_books:
+            book = Book.objects.get(pk=book_id)
+            book.checked_out = not book.checked_out 
             book.save()
-    
-    def get(self, request):
-        return render(request, 'checkout.html')
+
+        return super().form_valid(form)
 
 class CoreLoginView(LoginView):
     template_name = "core/login.html"

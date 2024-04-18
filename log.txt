@@ -11,4 +11,6 @@
 4-12/15 - Zidanni: Started user auth and ran into POST request errors. Fixed by changing urls. Ran into another redirect error
 
 4-16 - Zidanni: Finished user auth
-4-16 - Jay : Finish addbook functionality, began book checkout. Having trouble passing ext vars from django to vue
+4-16 - Jay : Finish addbook functionality, began book checkout. Having trouble passing ext vars from django to vue. merge branches
+
+4-17 - Jay : Finish home page that displays checked out books. ran into data passing problem at checkout. added a navigation bar

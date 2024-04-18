@@ -3,6 +3,14 @@
 
 {% block content %}
 
+
+{% comment %} {% for book in object_list %}
+{% if book.checked_out%}
+{{ book.name }}</a><br/>
+{% endif%}
+{% endfor %}
+<br><br> {% endcomment %}
+
 <div id="app">
     <app>
     </app>
@@ -14,10 +22,9 @@
 
     <script>
         var ext_csrf_token = '{{ csrf_token }}'
-        var ext_update_bis_url = '{% url 'library:home' %}'
-        var ext_checkedbooks = JSON.parse('{{ book_list|safe }}');
+        var ext_checkedbooks = JSON.parse('{{ book_list|escapejs }}');
     </script>
 
     {% vite_hmr_client %}
-    {% vite_asset 'src/apps/checkout/checkout.js' %}
+    {% vite_asset 'src/apps/home/home.js' %}
 {% endblock js %}
