@@ -12,6 +12,7 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.serializers import serialize
 import json
+from django.http import JsonResponse
 
 from .models import Book
 from .forms import BookForm
@@ -58,7 +59,7 @@ class CheckoutView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         book_data = Book.objects.all()
-        books_json = serialize('json', book_data, fields=('name', 'author', 'checkout_date'))
+        books_json = serialize('json', book_data, fields=('name', 'author', 'checked_out', 'checkout_date'))
         context["book_list"] = books_json
         return context
 
@@ -66,14 +67,16 @@ class CheckoutView(LoginRequiredMixin, UpdateView):
     def get_object(self, queryset=None):
         return None
 
-    def form_valid(self, form):
-        selected_books = form.cleaned_data.get('selectedBooks', [])
-        for book_id in selected_books:
-            book = Book.objects.get(pk=book_id)
+    def post(self, request, *args, **kwargs):
+        print(self.kwargs)
+        selected_books = request.POST
+        print(selected_books)
+        for bok in selected_books:
+            book = Book.objects.get(pk=bok.id)
             book.checked_out = not book.checked_out 
             book.save()
 
-        return super().form_valid(form)
+        return JsonResponse({"success": True})
 
 class CoreLoginView(LoginView):
     template_name = "core/login.html"

@@ -15,8 +15,6 @@
             Submit
         </button>
         <br><br>
-        With fetch this time
-        <br><br>
         <div v-if="form_error">
             <ul>
                 <li v-for="(error, index) in form_error">
@@ -43,6 +41,7 @@
         },
         data: function() {
             return {
+                i: 1,
                 csrf_token: '',
                 form: '',
                 selectedBooks: [],
@@ -56,11 +55,12 @@
         mounted() {
             this.csrf_token = ext_csrf_token,
             this.bookList = ext_book_list.map(item => ({
-  name: item.fields.name,
-}));
+                name: item.fields.name, 
+                id: this.i++,
+                checkedOut: item.fields.checked_out
+            }));
+            console.log(this.bookList)
             this.selectedBooks = this.bookList.filter((book) => book.checkedOut)
-
-            console.log(this.csrf_token)
         },
         methods: {
         },
@@ -76,6 +76,7 @@
                 for (var key in form_data) {
             		formData.append(key, form_data[key])
         	    }
+                console.log(formData)
                 fetch(this.update_bis_url,
             	{
                 	method: "post",
