@@ -68,13 +68,16 @@ class CheckoutView(LoginRequiredMixin, UpdateView):
         return None
 
     def post(self, request, *args, **kwargs):
-        print(self.kwargs)
-        selected_books = request.POST
-        print(selected_books)
-        for bok in selected_books:
-            book = Book.objects.get(pk=bok.id)
-            book.checked_out = not book.checked_out 
-            book.save()
+        books = request.POST.getlist('selected_books[]')
+        print(books)
+        for bok in books:
+            try:
+                book = Book.objects.get(pk=bok)
+                book.checked_out = not book.checked_out 
+                book.save()
+            except Book.DoesNotExist:
+                pass
+
 
         return JsonResponse({"success": True})
 
