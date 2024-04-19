@@ -3,6 +3,8 @@
 
 {% block content %}
 
+<h1>Add a book</h1>
+
 <form method="post">{% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Save">
@@ -14,8 +16,6 @@
     <app>
     </app>
 </div> {% endcomment %}
-
-<h4>Welcome! Please Login!</h4>
 
 {% endblock content %}
 

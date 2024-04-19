@@ -47,39 +47,36 @@ class HomeView(LoginRequiredMixin, ListView):
         book_list = [{'name': book.name, 'author': book.author, 'checkout_date': book.checkout_date.strftime('%Y-%m-%d')} for book in book_data]
         books_json = json.dumps(book_list)
         context["book_list"] = books_json
-        print("context", context)
         return context
 
-class CheckoutView(LoginRequiredMixin, UpdateView):
+class CheckoutView(LoginRequiredMixin, View):
     template_name = 'checkout.html'
-    model = Book
-    fields = ['checked_out'] 
-    success_url = reverse_lazy('home') 
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+
+    def get(self, request, *args, **kwargs):
         book_data = Book.objects.all()
         books_json = serialize('json', book_data, fields=('name', 'author', 'checked_out', 'checkout_date'))
-        context["book_list"] = books_json
-        return context
-
-
-    def get_object(self, queryset=None):
-        return None
+        context = {
+            'book_list': books_json
+        }
+        return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
-        books = request.POST.getlist('selected_books[]')
-        print(books)
-        for bok in books:
             try:
-                book = Book.objects.get(pk=bok)
-                book.checked_out = not book.checked_out 
-                book.save()
-            except Book.DoesNotExist:
-                pass
+                selected_books = json.loads(request.POST.get('selectedBooks', '[]'))
+                print(selected_books)
 
+                for book_id in selected_books:
+                    try:
+                        print(book_id)
+                        book = Book.objects.get(pk=book_id)
+                        book.checked_out = not book.checked_out 
+                        book.save()
+                    except Book.DoesNotExist:
+                        return JsonResponse({"success": False, "error": f"Book with ID {book_id} not found"}, status=404)
 
-        return JsonResponse({"success": True})
+                return JsonResponse({"success": True})
+            except json.JSONDecodeError:
+                return JsonResponse({"success": False, "error": "Invalid JSON payload"}, status=400)
 
 class CoreLoginView(LoginView):
     template_name = "core/login.html"

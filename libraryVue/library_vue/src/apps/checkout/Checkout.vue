@@ -1,8 +1,5 @@
 <template>
     <div>
-        <p>
-        Hello vue from checkout {{  bookList }}
-        </p>
         <h1>Select a book to check it out and deselect a book to return it</h1>
         <form method="post" class="form">
         <input type="hidden" name="csrfmiddlewaretoken" v-bind:value="csrf_token">
@@ -41,7 +38,6 @@
         },
         data: function() {
             return {
-                i: 1,
                 csrf_token: '',
                 form: '',
                 selectedBooks: [],
@@ -56,62 +52,56 @@
             this.csrf_token = ext_csrf_token,
             this.bookList = ext_book_list.map(item => ({
                 name: item.fields.name, 
-                id: this.i++,
+                id: item.pk,
                 checkedOut: item.fields.checked_out
             }));
             console.log(this.bookList)
             this.selectedBooks = this.bookList.filter((book) => book.checkedOut)
         },
+        // methods: {
+        // },
         methods: {
-        },
-        computed: {
-            submit_form_fetch(){
+            submit_form_fetch() {
                 console.log("fetching")
                 this.form_error = []
                 this.form_updated = ""
                 let formData = new FormData();
-                let form_data = {
-                        'selectedBooks': this.selectedBooks
-                }
-                for (var key in form_data) {
-            		formData.append(key, form_data[key])
-        	    }
-                console.log(formData)
-                fetch(this.update_bis_url,
-            	{
-                	method: "post",
-                	body: formData,
-                	headers: {'X-CSRFToken': this.csrf_token},
-                	credentials: 'same-origin'
-            	}
-        	).then(function(response) {
-            	console.log('response', response)
-            	return response.json()}).then(
-	            	this.handleResponse).catch(
-	                	(error) => {
-	                	console.log('error', String(error))
-	                	this.form_error=["error"]
-    			})
-            console.log(formData)
+                let indexes = this.selectedBooks.map(obj => obj.id)
+                console.log("selected", indexes)
+
+                indexes.forEach(id => {
+                    formData.append('selectedBooks[]', id);
+                });
+
+                fetch(this.update_bis_url, {
+                    method: "POST",
+                    body: formData,
+                    headers: {'X-CSRFToken': this.csrf_token},
+                    credentials: 'same-origin'
+                }).then(function(response) {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                }).then(this.handleResponse).catch((error) => {
+                    console.error('Error during fetch:', error);
+                    this.form_error = ["An unexpected error occurred. Please try again later."];
+                });
             },
             handleResponse(response) {
-                console.log('json response', response)
-                if ('success' in response){
-                        if (response['success'] == true) {
-                            this.form_updated = "Movie has been updated"
-                        } else {
-                            if ('errors' in response){
-                                    for (const [key, value] of Object.entries(response['errors'])) {
-                                        for (const error of value) {
-                                                this.form_error.push(`${key}: ${error}`)
-                                        }
-                                    }
-                            } else {
-                                    this.form_error=["Update failed - An error occurred but do not have more information about it"]
+                console.log('json response', response);
+                if (response['success'] === true) {
+                    this.form_updated = "Movie has been updated";
+                } else {
+                    if ('errors' in response) {
+                        for (const [key, value] of Object.entries(response['errors'])) {
+                            for (const error of value) {
+                                this.form_error.push(`${key}: ${error}`);
                             }
                         }
-                } else {
-                            this.form_error=["Update failed - It has been an error on the form request"]
+                    } else {
+                        this.form_error = ["Update failed - An error occurred but do not have more information about it"];
+                    }
                 }
             }
         }
